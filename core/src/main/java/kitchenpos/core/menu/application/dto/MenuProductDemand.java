@@ -2,11 +2,11 @@ package kitchenpos.core.menu.application.dto;
 
 import java.util.Objects;
 
-public class MenuProductRequest {
+public class MenuProductDemand {
     private final Long productId;
     private final Long quantity;
 
-    public MenuProductRequest(final Long productId, final Long quantity) {
+    public MenuProductDemand(final Long productId, final Long quantity) {
         this.productId = productId;
         this.quantity = quantity;
     }
@@ -27,7 +27,7 @@ public class MenuProductRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final MenuProductRequest that = (MenuProductRequest) o;
+        final MenuProductDemand that = (MenuProductDemand) o;
         return Objects.equals(productId, that.productId) && Objects.equals(quantity, that.quantity);
     }
 

@@ -3,9 +3,9 @@ package kitchenpos.api.ordertable.ui;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import kitchenpos.api.ordertable.ui.dto.OrderTableResponse;
 import kitchenpos.core.ordertable.application.TableService;
-import kitchenpos.core.ordertable.application.dto.OrderTableResponse;
-import kitchenpos.core.ordertable.application.dto.TableResponse;
+import kitchenpos.core.ordertable.application.dto.OrderTableRecord;
 import kitchenpos.core.ordertable.domain.NumberOfGuests;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,18 +24,18 @@ public class TableRestController {
     }
 
     @PostMapping("/api/tables")
-    public ResponseEntity<TableResponse> create(@RequestBody final Map<String, Object> parameter) {
-        final TableResponse created = tableService.create(
+    public ResponseEntity<OrderTableResponse> create(@RequestBody final Map<String, Object> parameter) {
+        final OrderTableRecord created = tableService.create(
                 new NumberOfGuests(Integer.parseInt(String.valueOf(parameter.get("numberOfGuests")))),
                 Boolean.parseBoolean(String.valueOf(parameter.get("empty")))
         );
-        final URI uri = URI.create("/api/tables/" + created);
-        return ResponseEntity.created(uri).body(created);
+        final URI uri = URI.create("/api/tables/" + created.getId());
+        return ResponseEntity.created(uri).body(OrderTableResponse.from(created));
     }
 
     @GetMapping("/api/tables")
     public ResponseEntity<List<OrderTableResponse>> list() {
-        return ResponseEntity.ok().body(tableService.list());
+        return ResponseEntity.ok().body(OrderTableResponse.from(tableService.list()));
     }
 
     @PutMapping("/api/tables/{orderTableId}/empty")
@@ -44,7 +44,7 @@ public class TableRestController {
             @RequestBody final Map<String, Object> parameter
     ) {
         final boolean empty = Boolean.parseBoolean(String.valueOf(parameter.get("empty")));
-        return ResponseEntity.ok().body(tableService.changeEmpty(orderTableId, empty));
+        return ResponseEntity.ok().body(OrderTableResponse.from(tableService.changeEmpty(orderTableId, empty)));
     }
 
     @PutMapping("/api/tables/{orderTableId}/number-of-guests")
@@ -53,6 +53,6 @@ public class TableRestController {
             @RequestBody final Map<String, Object> parameter
     ) {
         final NumberOfGuests numberOfGuests = new NumberOfGuests(Integer.parseInt(String.valueOf(parameter.get("numberOfGuests"))));
-        return ResponseEntity.ok().body(tableService.changeNumberOfGuests(orderTableId, numberOfGuests));
+        return ResponseEntity.ok().body(OrderTableResponse.from(tableService.changeNumberOfGuests(orderTableId, numberOfGuests)));
     }
 }

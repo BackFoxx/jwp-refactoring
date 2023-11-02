@@ -1,20 +1,13 @@
-package kitchenpos.core.order.application;
+package kitchenpos.core.order.application.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Objects;
-import kitchenpos.core.order.application.dto.OrderLineItemsRequest;
 
-public class OrderRequest {
-    @JsonProperty
+public class OrderDemand {
     private final Long orderTableId;
+    private final List<OrderLineItemsDemand> orderLineItems;
 
-    @JsonProperty("orderLineItems")
-    private final List<OrderLineItemsRequest> orderLineItems;
-
-    @JsonCreator
-    public OrderRequest(final Long orderTableId, final List<OrderLineItemsRequest> orderLineItems) {
+    public OrderDemand(final Long orderTableId, final List<OrderLineItemsDemand> orderLineItems) {
         this.orderTableId = orderTableId;
         this.orderLineItems = orderLineItems;
     }
@@ -23,7 +16,7 @@ public class OrderRequest {
         return orderTableId;
     }
 
-    public List<OrderLineItemsRequest> getOrderLineItems() {
+    public List<OrderLineItemsDemand> getOrderLineItems() {
         return orderLineItems;
     }
 
@@ -35,7 +28,7 @@ public class OrderRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final OrderRequest that = (OrderRequest) o;
+        final OrderDemand that = (OrderDemand) o;
         return Objects.equals(orderTableId, that.orderTableId) && Objects.equals(orderLineItems,
                 that.orderLineItems);
     }

@@ -3,10 +3,10 @@ package kitchenpos.application;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.List;
-import kitchenpos.core.menugroup.dto.MenuGroupResponse;
-import kitchenpos.core.product.application.dto.ProductResponse;
+import kitchenpos.core.menugroup.application.dto.MenuGroupRecord;
+import kitchenpos.core.ordertable.application.dto.OrderTableRecord;
+import kitchenpos.core.product.application.dto.ProductRecord;
 import kitchenpos.core.ordertable.application.TableService;
-import kitchenpos.core.ordertable.application.dto.TableResponse;
 import kitchenpos.core.menu.domain.Menu;
 import kitchenpos.core.menugroup.domain.MenuGroup;
 import kitchenpos.core.menu.domain.MenuProduct;
@@ -32,22 +32,22 @@ public class KitchenposFixture {
     }
 
     public static Product 상품만들기(final String name, final String price, final ProductService productService) {
-        final ProductResponse productResponse = productService.create(new Name(name), new Price(new BigDecimal(price)));
-        return new Product(productResponse.getId(), productResponse.getName(), productResponse.getPrice());
+        final ProductRecord productRecord = productService.create(new Name(name), new Price(new BigDecimal(price)));
+        return new Product(productRecord.getId(), productRecord.getName(), productRecord.getPrice());
     }
 
     public static MenuGroup 메뉴그룹만들기(final MenuGroupService menuGroupService) {
-        final MenuGroupResponse response = menuGroupService.create(new Name("코딱지메뉴그룹"));
+        final MenuGroupRecord response = menuGroupService.create(new Name("코딱지메뉴그룹"));
         return new MenuGroup(response.getId(), response.getName());
     }
 
     public static OrderTable 주문테이블만들기(final TableService tableService, final boolean isEmpty) {
         final OrderTable orderTable = new OrderTable(new NumberOfGuests(6), isEmpty);
-        final TableResponse orderTableId = tableService.create(new NumberOfGuests(6), isEmpty);
+        final OrderTableRecord orderTableRecord = tableService.create(new NumberOfGuests(6), isEmpty);
         final Field field = ReflectionUtils.findField(OrderTable.class, "id", Long.class);
         assert field != null;
         field.setAccessible(true);
-        ReflectionUtils.setField(field, orderTable, orderTableId.getId());
+        ReflectionUtils.setField(field, orderTable, orderTableRecord.getId());
 
         return orderTable;
     }

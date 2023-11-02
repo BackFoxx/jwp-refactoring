@@ -2,8 +2,8 @@ package kitchenpos.core.menu.application;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import kitchenpos.core.menu.application.dto.MenuProductRequest;
-import kitchenpos.core.menu.application.dto.MenuResponse;
+import kitchenpos.core.menu.application.dto.MenuProductDemand;
+import kitchenpos.core.menu.application.dto.MenuRecord;
 import kitchenpos.core.menu.domain.Menu;
 import kitchenpos.core.menu.domain.MenuProduct;
 import kitchenpos.core.menu.domain.MenuProducts;
@@ -31,18 +31,18 @@ public class MenuService {
     }
 
     @Transactional
-    public MenuResponse create(final String name, final Price price, final Long menuGroupId, final List<MenuProductRequest> menuProductRequests) {
+    public MenuRecord create(final String name, final Price price, final Long menuGroupId, final List<MenuProductDemand> menuProductRequests) {
         validateMenuGroupIdExists(menuGroupId);
 
         final MenuProducts menuProducts = new MenuProducts(menuProductRequests
                 .stream().map(this::getMenuProduct)
-                .collect(Collectors.toList()));
+                .toList());
 
         if (menuProducts.isBiggerThanTotalPrice(price)) {
             throw new IllegalArgumentException();
         }
 
-        return MenuResponse.from(menuDao.save(new Menu(name, price, menuGroupId, menuProducts)));
+        return MenuRecord.from(menuDao.save(new Menu(name, price, menuGroupId, menuProducts)));
     }
 
     private void validateMenuGroupIdExists(final Long menuGroupId) {
@@ -51,16 +51,16 @@ public class MenuService {
         }
     }
 
-    private MenuProduct getMenuProduct(final MenuProductRequest menuProductRequest) {
-        final Product product = productDao.findMandatoryById(menuProductRequest.getProductId());
-        return new MenuProduct(product.getPrice(), product.getId(), menuProductRequest.getQuantity());
+    private MenuProduct getMenuProduct(final MenuProductDemand menuProductDemand) {
+        final Product product = productDao.findMandatoryById(menuProductDemand.getProductId());
+        return new MenuProduct(product.getPrice(), product.getId(), menuProductDemand.getQuantity());
     }
 
-    public List<MenuResponse> list() {
-        return MenuResponse.from(menuDao.findAll());
+    public List<MenuRecord> list() {
+        return MenuRecord.from(menuDao.findAll());
     }
 
-    public MenuResponse findById(final Long id) {
-        return MenuResponse.from(menuDao.findById(id).orElseThrow(IllegalArgumentException::new));
+    public MenuRecord findById(final Long id) {
+        return MenuRecord.from(menuDao.findById(id).orElseThrow(IllegalArgumentException::new));
     }
 }

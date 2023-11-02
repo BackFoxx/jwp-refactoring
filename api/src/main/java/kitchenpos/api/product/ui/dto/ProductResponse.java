@@ -1,12 +1,11 @@
-package kitchenpos.core.product.application.dto;
+package kitchenpos.api.product.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.util.List;
-import java.util.stream.Collectors;
+import kitchenpos.core.product.application.dto.ProductRecord;
 import kitchenpos.core.product.domain.Name;
 import kitchenpos.core.product.domain.Price;
-import kitchenpos.core.product.domain.Product;
 
 public class ProductResponse {
     @JsonProperty("id")
@@ -24,14 +23,18 @@ public class ProductResponse {
         this.price = price;
     }
 
-    public static List<ProductResponse> from(final List<Product> products) {
-        return products
-                .stream().map(product -> new ProductResponse(product.getId(), product.getName(), product.getPrice()))
-                .collect(Collectors.toList());
+    public static ProductResponse from(final ProductRecord record) {
+        return new ProductResponse(
+                record.getId(),
+                record.getName(),
+                record.getPrice()
+        );
     }
 
-    public static ProductResponse from(final Product product) {
-        return new ProductResponse(product.getId(), product.getName(), product.getPrice());
+    public static List<ProductResponse> from(final List<ProductRecord> records) {
+        return records
+                .stream().map(ProductResponse::from)
+                .toList();
     }
 
     public Long getId() {

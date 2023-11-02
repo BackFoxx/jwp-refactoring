@@ -1,6 +1,5 @@
 package kitchenpos.core.product.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.util.Objects;
 import org.springframework.data.relational.core.mapping.Column;
@@ -10,13 +9,12 @@ public class Price {
     private static final int MAX_PRICE_SCALE = 2;
     private static final int MAX_PRICE_PRECISION = 19;
 
-    @JsonProperty("price")
     @Column("PRICE")
-    private final BigDecimal value;
+    private final BigDecimal price;
 
-    public Price(final BigDecimal value) {
-        validatePrice(value);
-        this.value = value;
+    public Price(final BigDecimal price) {
+        validatePrice(price);
+        this.price = price;
     }
 
     private static void validatePrice(final BigDecimal value) {
@@ -38,15 +36,15 @@ public class Price {
     }
 
     public Price multiply(final BigDecimal value) {
-        return new Price(this.value.multiply(value));
+        return new Price(this.price.multiply(value));
     }
 
     public Price add(final Price price) {
-        return new Price(this.value.add(price.value));
+        return new Price(this.price.add(price.price));
     }
 
     public boolean isBiggerThan(final Price price) {
-        return this.value.compareTo(price.value) > 0;
+        return this.price.compareTo(price.price) > 0;
     }
 
     @Override
@@ -58,11 +56,11 @@ public class Price {
             return false;
         }
         final Price price = (Price) o;
-        return Objects.equals(value, price.value);
+        return Objects.equals(this.price, price.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value);
+        return Objects.hash(price);
     }
 }

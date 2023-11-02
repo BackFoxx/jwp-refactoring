@@ -5,7 +5,7 @@ import java.util.List;
 import kitchenpos.core.ordertable.application.OrderTableDao;
 import kitchenpos.core.ordertable.domain.OrderTableUngroupValidator;
 import kitchenpos.core.ordertable.domain.OrderTables;
-import kitchenpos.core.tablegroup.application.dto.TableGroupResponse;
+import kitchenpos.core.tablegroup.application.dto.TableGroupRecord;
 import kitchenpos.core.tablegroup.domain.TableGroup;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,12 +24,12 @@ public class TableGroupService {
     }
 
     @Transactional
-    public TableGroupResponse create(final List<Long> orderTableIds) {
+    public TableGroupRecord create(final List<Long> orderTableIds) {
         final OrderTables orderTables = new OrderTables(orderTableDao.findAllByIdIn(orderTableIds));
         validateOrderTables(orderTableIds, orderTables);
 
         final TableGroup tableGroup = new TableGroup(LocalDateTime.now(), new OrderTables(orderTables.getOrderTables()));
-        return TableGroupResponse.from(tableGroupDao.save(tableGroup));
+        return TableGroupRecord.from(tableGroupDao.save(tableGroup));
     }
 
     private static void validateOrderTables(final List<Long> orderTableIds, final OrderTables orderTables) {

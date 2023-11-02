@@ -3,7 +3,7 @@ package kitchenpos.application;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
-import kitchenpos.core.product.application.dto.ProductResponse;
+import kitchenpos.core.product.application.dto.ProductRecord;
 import kitchenpos.core.product.application.ProductDao;
 import kitchenpos.core.product.application.ProductService;
 import kitchenpos.core.product.domain.Name;
@@ -30,7 +30,7 @@ class ProductServiceTest {
     @Test
     @DisplayName("이름과 가격을 제공하면 새로운 상품을 제공할 수 있다.")
     void givenNameAndPrice() {
-        final ProductResponse savedProduct = this.productService.create(new Name("쫀득쫀득 지렁이"), new Price(new BigDecimal("4000")));
+        final ProductRecord savedProduct = this.productService.create(new Name("쫀득쫀득 지렁이"), new Price(new BigDecimal("4000")));
         assertThat(savedProduct).isNotNull();
     }
 }

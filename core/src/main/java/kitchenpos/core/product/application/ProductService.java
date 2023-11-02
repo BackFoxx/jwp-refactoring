@@ -1,7 +1,7 @@
 package kitchenpos.core.product.application;
 
 import java.util.List;
-import kitchenpos.core.product.application.dto.ProductResponse;
+import kitchenpos.core.product.application.dto.ProductRecord;
 import kitchenpos.core.product.domain.Name;
 import kitchenpos.core.product.domain.Price;
 import kitchenpos.core.product.domain.Product;
@@ -17,12 +17,12 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductResponse create(final Name name, final Price price) {
+    public ProductRecord create(final Name name, final Price price) {
         final Product product = new Product(null, name, price);
-        return ProductResponse.from(productDao.save(product));
+        return ProductRecord.from(productDao.save(product));
     }
 
-    public List<ProductResponse> list() {
-        return ProductResponse.from(productDao.findAll());
+    public List<ProductRecord> list() {
+        return ProductRecord.from(productDao.findAll());
     }
 }

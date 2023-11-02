@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import kitchenpos.core.menu.application.MenuService;
-import kitchenpos.core.menu.application.dto.MenuResponse;
-import kitchenpos.core.order.application.dto.OrderLineItemsRequest;
-import kitchenpos.core.order.application.dto.OrderResponse;
+import kitchenpos.core.menu.application.dto.MenuRecord;
+import kitchenpos.core.order.application.dto.OrderLineItemsDemand;
+import kitchenpos.core.order.application.dto.OrderRecord;
 import kitchenpos.core.order.domain.Order;
 import kitchenpos.core.order.domain.OrderLineItem;
 import kitchenpos.core.order.domain.OrderStatus;
@@ -27,7 +27,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponse create(final Long orderTableId, final List<OrderLineItemsRequest> orderLineItemRequests) {
+    public OrderRecord create(final Long orderTableId, final List<OrderLineItemsDemand> orderLineItemRequests) {
         final List<OrderLineItem> orderLineItems = convertToLineItems(orderLineItemRequests);
 
         final Order order = new Order(orderTableId, OrderStatus.COOKING, LocalDateTime.now(), orderLineItems);
@@ -35,13 +35,13 @@ public class OrderService {
             orderCreationValidator.validate(order);
         }
 
-        return OrderResponse.from(orderDao.save(order));
+        return OrderRecord.from(orderDao.save(order));
     }
 
-    private List<OrderLineItem> convertToLineItems(final List<OrderLineItemsRequest> orderLineItemRequests) {
+    private List<OrderLineItem> convertToLineItems(final List<OrderLineItemsDemand> orderLineItemRequests) {
         return orderLineItemRequests
                 .stream().map(orderLineItemsRequest -> {
-                    final MenuResponse menu = menuService.findById(orderLineItemsRequest.getMenuId());
+                    final MenuRecord menu = menuService.findById(orderLineItemsRequest.getMenuId());
                     return new OrderLineItem(
                             orderLineItemsRequest.getMenuId(),
                             menu.getPrice(),
@@ -52,16 +52,16 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    public List<OrderResponse> list() {
+    public List<OrderRecord> list() {
         final List<Order> orders = orderDao.findAll();
-        return OrderResponse.from(orders);
+        return OrderRecord.from(orders);
     }
 
     @Transactional
-    public OrderResponse changeOrderStatus(final Long orderId, final OrderStatus orderStatus) {
+    public OrderRecord changeOrderStatus(final Long orderId, final OrderStatus orderStatus) {
         final Order savedOrder = orderDao.findMandatoryById(orderId);
         savedOrder.transitionStatusTo(orderStatus);
         orderDao.save(savedOrder);
-        return OrderResponse.from(savedOrder);
+        return OrderRecord.from(savedOrder);
     }
 }

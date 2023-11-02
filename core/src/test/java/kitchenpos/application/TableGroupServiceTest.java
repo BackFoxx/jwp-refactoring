@@ -9,11 +9,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.math.BigDecimal;
 import java.util.List;
-import kitchenpos.core.menu.application.dto.MenuProductRequest;
-import kitchenpos.core.order.application.dto.OrderLineItemsRequest;
-import kitchenpos.core.menu.application.dto.MenuResponse;
+import kitchenpos.core.menu.application.dto.MenuProductDemand;
+import kitchenpos.core.order.application.dto.OrderLineItemsDemand;
+import kitchenpos.core.menu.application.dto.MenuRecord;
 import kitchenpos.core.tablegroup.application.TableGroupService;
-import kitchenpos.core.tablegroup.application.dto.TableGroupResponse;
+import kitchenpos.core.tablegroup.application.dto.TableGroupRecord;
 import kitchenpos.core.tablegroup.application.TableGroupCustomDao;
 import kitchenpos.core.menugroup.domain.MenuGroup;
 import kitchenpos.core.order.application.OrderService;
@@ -51,7 +51,7 @@ class TableGroupServiceTest {
             final OrderTable savedOrderTable = 주문테이블만들기(tableService, true);
             final OrderTable savedOrderTable2 = 주문테이블만들기(tableService, true);
 
-            final TableGroupResponse savedTableGroup = tableGroupService.create(
+            final TableGroupRecord savedTableGroup = tableGroupService.create(
                     List.of(savedOrderTable.getId(), savedOrderTable2.getId()));
 
             assertThat(savedTableGroup).isNotNull();
@@ -108,7 +108,7 @@ class TableGroupServiceTest {
             final OrderTable savedOrderTable = 주문테이블만들기(tableService, true);
             final OrderTable savedOrderTable2 = 주문테이블만들기(tableService, true);
 
-            final TableGroupResponse savedTableGroup = tableGroupService.create(
+            final TableGroupRecord savedTableGroup = tableGroupService.create(
                     List.of(savedOrderTable.getId(), savedOrderTable2.getId()));
 
             assertThat(savedTableGroup.getOrderTables())
@@ -130,7 +130,7 @@ class TableGroupServiceTest {
             final OrderTable savedOrderTable = 주문테이블만들기(tableService, true);
             final OrderTable savedOrderTable2 = 주문테이블만들기(tableService, true);
 
-            final TableGroupResponse savedTableGroup = tableGroupService.create(
+            final TableGroupRecord savedTableGroup = tableGroupService.create(
                     List.of(savedOrderTable.getId(), savedOrderTable2.getId()));
 
             주어진_OrderTable로_주문하기(productService, menuService, menuGroupService, orderService, savedOrderTable);
@@ -153,10 +153,10 @@ class TableGroupServiceTest {
             final MenuGroup savedMenuGroup = 메뉴그룹만들기(menuGroupService);
 
             // given : 메뉴
-            final MenuResponse savedMenu
-                    = menuService.create("메뉴!", new Price(new BigDecimal("4000")), savedMenuGroup.getId(), List.of(new MenuProductRequest(savedProduct.getId(), 4L)));
-            final MenuResponse savedMenu2
-                    = menuService.create("메뉴 2!", new Price(new BigDecimal("4000")), savedMenuGroup.getId(), List.of(new MenuProductRequest(savedProduct.getId(), 4L)));
+            final MenuRecord savedMenu
+                    = menuService.create("메뉴!", new Price(new BigDecimal("4000")), savedMenuGroup.getId(), List.of(new MenuProductDemand(savedProduct.getId(), 4L)));
+            final MenuRecord savedMenu2
+                    = menuService.create("메뉴 2!", new Price(new BigDecimal("4000")), savedMenuGroup.getId(), List.of(new MenuProductDemand(savedProduct.getId(), 4L)));
 
             // given : 주문 메뉴
             final OrderLineItem orderLineItem = 주문할메뉴만들기(savedMenu.getId(), 4);
@@ -166,8 +166,8 @@ class TableGroupServiceTest {
             orderService.create(
                     orderTable.getId(),
                     List.of(
-                            new OrderLineItemsRequest(orderLineItem.getMenuId(), orderLineItem.getQuantity()),
-                            new OrderLineItemsRequest(orderLineItem2.getMenuId(), orderLineItem2.getQuantity())
+                            new OrderLineItemsDemand(orderLineItem.getMenuId(), orderLineItem.getQuantity()),
+                            new OrderLineItemsDemand(orderLineItem2.getMenuId(), orderLineItem2.getQuantity())
                     )
             );
         }

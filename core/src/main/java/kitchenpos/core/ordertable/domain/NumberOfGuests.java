@@ -1,20 +1,18 @@
 package kitchenpos.core.ordertable.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 import org.springframework.data.relational.core.mapping.Column;
 
 public class NumberOfGuests {
     @Column("NUMBER_OF_GUESTS")
-    @JsonProperty("numberOfGuests")
-    private final int value;
+    private final int numberOfGuests;
 
-    public NumberOfGuests(final int value) {
-        if (value < 0) {
+    public NumberOfGuests(final int numberOfGuests) {
+        if (numberOfGuests < 0) {
             throw new IllegalArgumentException();
         }
 
-        this.value = value;
+        this.numberOfGuests = numberOfGuests;
     }
 
     @Override
@@ -26,11 +24,11 @@ public class NumberOfGuests {
             return false;
         }
         final NumberOfGuests that = (NumberOfGuests) o;
-        return value == that.value;
+        return numberOfGuests == that.numberOfGuests;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value);
+        return Objects.hash(numberOfGuests);
     }
 }

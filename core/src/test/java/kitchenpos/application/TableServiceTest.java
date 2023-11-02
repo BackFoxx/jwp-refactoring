@@ -10,15 +10,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import kitchenpos.core.menu.application.dto.MenuProductRequest;
-import kitchenpos.core.order.application.dto.OrderLineItemsRequest;
-import kitchenpos.core.menu.application.dto.MenuResponse;
-import kitchenpos.core.order.application.dto.OrderResponse;
+import kitchenpos.core.menu.application.dto.MenuProductDemand;
+import kitchenpos.core.order.application.dto.OrderLineItemsDemand;
+import kitchenpos.core.menu.application.dto.MenuRecord;
+import kitchenpos.core.order.application.dto.OrderRecord;
 import kitchenpos.core.order.application.validator.OrderStatusOrderTablesValidator;
 import kitchenpos.core.order.domain.OrderStatus;
 import kitchenpos.core.ordertable.application.TableService;
-import kitchenpos.core.ordertable.application.dto.OrderTableResponse;
-import kitchenpos.core.ordertable.application.dto.TableResponse;
+import kitchenpos.core.ordertable.application.dto.OrderTableRecord;
 import kitchenpos.core.ordertable.application.OrderTableDao;
 import kitchenpos.core.menugroup.domain.MenuGroup;
 import kitchenpos.core.order.application.OrderService;
@@ -52,9 +51,9 @@ class TableServiceTest {
         @Test
         @DisplayName("orderTableId에 해당하는 pathVariable에 주문 테이블 식별자를 제공하여 테이블의 비어있음 여부를 변경할 수 있다.")
         void givenOrderTableId() {
-            final TableResponse savedTableId = tableService.create(new NumberOfGuests(6), true);
+            final OrderTableRecord savedTableId = tableService.create(new NumberOfGuests(6), true);
 
-            final OrderTableResponse changedTable = tableService.changeEmpty(savedTableId.getId(), false);
+            final OrderTableRecord changedTable = tableService.changeEmpty(savedTableId.getId(), false);
             assertThat(changedTable).extracting("empty").isEqualTo(false);
         }
 
@@ -74,12 +73,12 @@ class TableServiceTest {
             final MenuGroup savedMenuGroup = 메뉴그룹만들기(menuGroupService);
 
             // given : 메뉴
-            final MenuResponse savedMenu
+            final MenuRecord savedMenu
                     = menuService.create("메뉴!", new Price(new BigDecimal("4000")), savedMenuGroup.getId(),
-                    List.of(new MenuProductRequest(savedProduct.getId(), 4L)));
-            final MenuResponse savedMenu2
+                    List.of(new MenuProductDemand(savedProduct.getId(), 4L)));
+            final MenuRecord savedMenu2
                     = menuService.create("메뉴 2!", new Price(new BigDecimal("9000")), savedMenuGroup.getId(),
-                    List.of(new MenuProductRequest(savedProduct.getId(), 4L)));
+                    List.of(new MenuProductDemand(savedProduct.getId(), 4L)));
 
             final OrderLineItem orderLineItem = 주문할메뉴만들기(savedMenu.getId(), 4);
             final OrderLineItem orderLineItem2 = 주문할메뉴만들기(savedMenu2.getId(), 3);
@@ -88,11 +87,11 @@ class TableServiceTest {
             final OrderTable savedOrderTable = 주문테이블만들기(tableService, false);
 
             // given : 주문
-            final OrderResponse savedOrder = orderService.create(
+            final OrderRecord savedOrder = orderService.create(
                     savedOrderTable.getId(),
                     List.of(
-                            new OrderLineItemsRequest(orderLineItem.getMenuId(), orderLineItem.getQuantity()),
-                            new OrderLineItemsRequest(orderLineItem2.getMenuId(), orderLineItem2.getQuantity())
+                            new OrderLineItemsDemand(orderLineItem.getMenuId(), orderLineItem.getQuantity()),
+                            new OrderLineItemsDemand(orderLineItem2.getMenuId(), orderLineItem2.getQuantity())
                     )
             );
 
@@ -110,11 +109,11 @@ class TableServiceTest {
         @Test
         @DisplayName("orderTableId에 해당하는 pathVariable에 주문 테이블 식별자를, requestBody에 변경하려는 손님 수를 제공하여 변경할 수 있다.")
         void given(@Autowired OrderTableDao orderTableDao) {
-            final TableResponse savedTableId = tableService.create(new NumberOfGuests(6), false);
+            final OrderTableRecord orderTableRecord = tableService.create(new NumberOfGuests(6), false);
 
-            tableService.changeNumberOfGuests(savedTableId.getId(), new NumberOfGuests(9));
+            tableService.changeNumberOfGuests(orderTableRecord.getId(), new NumberOfGuests(9));
 
-            final Optional<OrderTable> changedOrderTable = orderTableDao.findById(savedTableId.getId());
+            final Optional<OrderTable> changedOrderTable = orderTableDao.findById(orderTableRecord.getId());
             assertThat(changedOrderTable.get().getNumberOfGuests()).isEqualTo(new NumberOfGuests(9));
         }
 

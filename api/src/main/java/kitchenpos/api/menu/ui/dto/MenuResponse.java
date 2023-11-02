@@ -1,10 +1,10 @@
-package kitchenpos.core.menu.application.dto;
+package kitchenpos.api.menu.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.util.List;
 import java.util.stream.Collectors;
-import kitchenpos.core.menu.domain.Menu;
+import kitchenpos.core.menu.application.dto.MenuRecord;
 import kitchenpos.core.product.domain.Price;
 
 public class MenuResponse {
@@ -28,31 +28,23 @@ public class MenuResponse {
         this.menuProducts = menuProducts;
     }
 
-    public static MenuResponse from(final Menu menu) {
+    public static MenuResponse from(final MenuRecord record) {
         return new MenuResponse(
-                menu.getId(),
-                menu.getName(),
-                menu.getPrice(),
-                menu.getMenuGroupId(),
-                MenuProductResponse.from(menu.getMenuProducts())
+                record.getId(),
+                record.getName(),
+                record.getPrice(),
+                record.getMenuGroupId(),
+                MenuProductResponse.from(record.getMenuProducts())
         );
     }
 
-    public static List<MenuResponse> from(final List<Menu> menus) {
-        return menus
+    public static List<MenuResponse> from(final List<MenuRecord> records) {
+        return records
                 .stream().map(MenuResponse::from)
-                .collect(Collectors.toList());
-    }
-
-    public Long getId() {
-        return id;
+                .toList();
     }
 
     public String getName() {
         return name;
-    }
-
-    public Price getPrice() {
-        return price;
     }
 }

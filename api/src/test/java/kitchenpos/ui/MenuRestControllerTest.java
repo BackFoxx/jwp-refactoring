@@ -5,15 +5,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import kitchenpos.api.menu.ui.MenuRequest;
+import kitchenpos.api.menu.ui.dto.MenuRequest;
 import kitchenpos.api.menu.ui.MenuRestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
 import kitchenpos.core.menu.application.MenuService;
-import kitchenpos.core.menu.application.dto.MenuProductRequest;
-import kitchenpos.core.menu.application.dto.MenuProductResponse;
-import kitchenpos.core.menu.application.dto.MenuResponse;
+import kitchenpos.core.menu.application.dto.MenuProductDemand;
+import kitchenpos.core.menu.application.dto.MenuProductRecord;
+import kitchenpos.core.menu.application.dto.MenuRecord;
 import kitchenpos.core.product.domain.Price;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,17 +38,17 @@ class MenuRestControllerTest {
     @Test
     @DisplayName("POST /api/menus")
     void createProduct() throws Exception {
-        final List<MenuProductRequest> menuProductRequests = List.of(
-                new MenuProductRequest(1L, 4L),
-                new MenuProductRequest(2L, 8L)
+        final List<MenuProductDemand> menuProductRequests = List.of(
+                new MenuProductDemand(1L, 4L),
+                new MenuProductDemand(2L, 8L)
         );
         final MenuRequest menuRequest = new MenuRequest("준팍", new BigDecimal("4000"), 1L, menuProductRequests);
 
-        final MenuResponse menuResponse = new MenuResponse(1L, "준팍", new Price(new BigDecimal("4000")), 1L,
-                List.of(new MenuProductResponse(1L, 1L, 4L), new MenuProductResponse(1L, 1L, 4L)));
+        final MenuRecord menuRecord = new MenuRecord(1L, "준팍", new Price(new BigDecimal("4000")), 1L,
+                List.of(new MenuProductRecord(1L, 1L, 4L), new MenuProductRecord(1L, 1L, 4L)));
 
         when(menuService.create("준팍", new Price(new BigDecimal("4000")), 1L, menuProductRequests))
-                .thenReturn(menuResponse);
+                .thenReturn(menuRecord);
 
         mockMvc.perform(post("/api/menus")
                         .contentType(MediaType.APPLICATION_JSON)

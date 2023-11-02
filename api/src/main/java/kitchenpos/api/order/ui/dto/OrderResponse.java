@@ -1,10 +1,9 @@
-package kitchenpos.core.order.application.dto;
+package kitchenpos.api.order.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
-import kitchenpos.core.order.domain.Order;
+import kitchenpos.core.order.application.dto.OrderRecord;
 import kitchenpos.core.order.domain.OrderStatus;
 
 public class OrderResponse {
@@ -29,20 +28,14 @@ public class OrderResponse {
         this.orderLineItems = orderLineItems;
     }
 
-    public static OrderResponse from(final Order order) {
+    public static OrderResponse from(final OrderRecord record) {
         return new OrderResponse(
-                order.getId(),
-                order.getOrderTableId(),
-                order.getOrderStatus(),
-                order.getOrderedTime(),
-                OrderLineItemResponse.from(order.getOrderLineItems())
+                record.getId(),
+                record.getOrderTableId(),
+                record.getOrderStatus(),
+                record.getOrderedTime(),
+                OrderLineItemResponse.from(record.getOrderLineItems())
         );
-    }
-
-    public static List<OrderResponse> from(final List<Order> orders) {
-        return orders
-                .stream().map(OrderResponse::from)
-                .collect(Collectors.toList());
     }
 
     public Long getId() {

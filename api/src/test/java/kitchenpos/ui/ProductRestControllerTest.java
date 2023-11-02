@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.Map;
 import kitchenpos.core.product.application.ProductService;
-import kitchenpos.core.product.application.dto.ProductResponse;
+import kitchenpos.core.product.application.dto.ProductRecord;
 import kitchenpos.core.product.domain.Product;
 import kitchenpos.core.product.domain.Name;
 import kitchenpos.core.product.domain.Price;
@@ -38,9 +38,9 @@ class ProductRestControllerTest {
     @Test
     @DisplayName("POST /api/products")
     void createProduct() throws Exception {
-        final Product product = new Product(null, new Name("프로덕트"), new Price(new BigDecimal(4000L)));
+        final Product product = new Product(1L, new Name("프로덕트"), new Price(new BigDecimal(4000L)));
 
-        when(productService.create(any(Name.class), any(Price.class))).thenReturn(ProductResponse.from(product));
+        when(productService.create(any(Name.class), any(Price.class))).thenReturn(ProductRecord.from(product));
         mockMvc.perform(post("/api/products")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(Map.of("name", "강정치킨", "price", 17000))))

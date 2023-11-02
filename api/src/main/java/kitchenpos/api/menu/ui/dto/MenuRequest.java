@@ -1,20 +1,20 @@
-package kitchenpos.api.menu.ui;
+package kitchenpos.api.menu.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
-import kitchenpos.core.menu.application.dto.MenuProductRequest;
+import kitchenpos.core.menu.application.dto.MenuProductDemand;
 
 public class MenuRequest {
     private final String name;
     private final BigDecimal price;
     private final Long menuGroupId;
     @JsonProperty("menuProducts")
-    private final List<MenuProductRequest> menuProductRequests;
+    private final List<MenuProductDemand> menuProductRequests;
 
     public MenuRequest(final String name, final BigDecimal price, final Long menuGroupId,
-                       final List<MenuProductRequest> menuProductRequests) {
+                       final List<MenuProductDemand> menuProductRequests) {
         this.name = name;
         this.price = price;
         this.menuGroupId = menuGroupId;
@@ -33,7 +33,7 @@ public class MenuRequest {
         return menuGroupId;
     }
 
-    public List<MenuProductRequest> getMenuProductRequests() {
+    public List<MenuProductDemand> getMenuProductRequests() {
         return menuProductRequests;
     }
 

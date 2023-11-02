@@ -2,7 +2,7 @@ package kitchenpos.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import kitchenpos.core.menugroup.dto.MenuGroupResponse;
+import kitchenpos.core.menugroup.application.dto.MenuGroupRecord;
 import kitchenpos.core.product.domain.Name;
 import kitchenpos.core.menugroup.application.MenuGroupService;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +21,7 @@ class MenuGroupServiceTest {
     @Test
     @DisplayName("메뉴 그룹의 이름을 제공하여 메뉴 그룹을 저장할 수 있다.")
     void givenName() {
-        final MenuGroupResponse savedMenuGroup = menuGroupService.create(new Name("메뉴메뉴~!"));
+        final MenuGroupRecord savedMenuGroup = menuGroupService.create(new Name("메뉴메뉴~!"));
 
         assertThat(savedMenuGroup).isNotNull();
     }

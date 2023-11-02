@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import kitchenpos.api.tablegroup.ui.TableGroupRestController;
 import kitchenpos.core.tablegroup.application.TableGroupService;
-import kitchenpos.core.tablegroup.application.dto.TableGroupResponse;
+import kitchenpos.core.tablegroup.application.dto.TableGroupRecord;
 import kitchenpos.core.ordertable.domain.OrderTable;
 import kitchenpos.core.ordertable.domain.OrderTables;
 import kitchenpos.core.tablegroup.domain.TableGroup;
@@ -50,7 +50,7 @@ class TableGroupRestControllerTest {
                 )
         );
 
-        when(tableGroupService.create(List.of(1L, 2L))).thenReturn(TableGroupResponse.from(tableGroup));
+        when(tableGroupService.create(List.of(1L, 2L))).thenReturn(TableGroupRecord.from(tableGroup));
         mockMvc.perform(post("/api/table-groups")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))

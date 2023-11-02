@@ -1,8 +1,10 @@
-package kitchenpos.core.order.application.dto;
+package kitchenpos.api.order.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.stream.Collectors;
+import kitchenpos.api.menu.ui.dto.MenuProductResponse;
+import kitchenpos.core.order.application.dto.OrderLineItemRecord;
 import kitchenpos.core.order.domain.OrderLineItem;
 
 public class OrderLineItemResponse {
@@ -19,11 +21,13 @@ public class OrderLineItemResponse {
         this.quantity = quantity;
     }
 
-    public static List<OrderLineItemResponse> from(final List<OrderLineItem> orderLineItems) {
-        return orderLineItems
-                .stream()
-                .map(orderLineItem -> new OrderLineItemResponse(orderLineItem.getSeq(),
-                        orderLineItem.getMenuId(), orderLineItem.getQuantity()))
+    public static List<OrderLineItemResponse> from(final List<OrderLineItemRecord> records) {
+        return records
+                .stream().map(itemRecord -> new OrderLineItemResponse(
+                        itemRecord.getSeq(),
+                        itemRecord.getMenuId(),
+                        itemRecord.getQuantity()
+                ))
                 .collect(Collectors.toList());
     }
 }

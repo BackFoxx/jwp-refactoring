@@ -11,10 +11,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.math.BigDecimal;
 import java.util.List;
-import kitchenpos.core.menu.application.dto.MenuProductRequest;
-import kitchenpos.core.order.application.dto.OrderLineItemsRequest;
-import kitchenpos.core.menu.application.dto.MenuResponse;
-import kitchenpos.core.order.application.dto.OrderResponse;
+import kitchenpos.core.menu.application.dto.MenuProductDemand;
+import kitchenpos.core.order.application.dto.OrderLineItemsDemand;
+import kitchenpos.core.menu.application.dto.MenuRecord;
+import kitchenpos.core.order.application.dto.OrderRecord;
 import kitchenpos.core.menu.application.MenuService;
 import kitchenpos.core.menu.domain.Menu;
 import kitchenpos.core.menugroup.domain.MenuGroup;
@@ -60,13 +60,13 @@ class OrderServiceTest {
         final MenuGroup savedMenuGroup = 메뉴그룹만들기(menuGroupService);
 
         // given : 메뉴
-        final MenuResponse savedMenu
+        final MenuRecord savedMenu
                 = menuService.create("메뉴!", new Price(new BigDecimal("4000")), savedMenuGroup.getId(),
-                List.of(new MenuProductRequest(savedProduct.getId(), 4L)));
+                List.of(new MenuProductDemand(savedProduct.getId(), 4L)));
 
-        final MenuResponse savedMenu2
+        final MenuRecord savedMenu2
                 = menuService.create("메뉴 2!", new Price(new BigDecimal("9000")), savedMenuGroup.getId(),
-                List.of(new MenuProductRequest(savedProduct.getId(), 4L)));
+                List.of(new MenuProductDemand(savedProduct.getId(), 4L)));
 
         // given : 주문 메뉴
         final OrderLineItem orderLineItem = 주문할메뉴만들기(savedMenu.getId(), 4);
@@ -76,11 +76,11 @@ class OrderServiceTest {
         final OrderTable savedOrderTable = 주문테이블만들기(tableService, false);
 
         // given : 주문
-        final OrderResponse savedOrder = orderService.create(
+        final OrderRecord savedOrder = orderService.create(
                 savedOrderTable.getId(),
                 List.of(
-                        new OrderLineItemsRequest(orderLineItem.getMenuId(), orderLineItem.getQuantity()),
-                        new OrderLineItemsRequest(orderLineItem2.getMenuId(), orderLineItem2.getQuantity())
+                        new OrderLineItemsDemand(orderLineItem.getMenuId(), orderLineItem.getQuantity()),
+                        new OrderLineItemsDemand(orderLineItem2.getMenuId(), orderLineItem2.getQuantity())
                 )
         );
 
@@ -128,8 +128,8 @@ class OrderServiceTest {
 
         // given : 주문
         assertThatThrownBy(() -> orderService.create(savedOrderTable.getId(), List.of(
-                new OrderLineItemsRequest(orderLineItem.getMenuId(), orderLineItem.getQuantity()),
-                new OrderLineItemsRequest(orderLineItem2.getMenuId(), orderLineItem2.getQuantity())
+                new OrderLineItemsDemand(orderLineItem.getMenuId(), orderLineItem.getQuantity()),
+                new OrderLineItemsDemand(orderLineItem2.getMenuId(), orderLineItem2.getQuantity())
         )))
                 .isInstanceOf(IllegalArgumentException.class);
     }
@@ -157,8 +157,8 @@ class OrderServiceTest {
 
         // given : 주문
         assertThatThrownBy(() -> orderService.create(0L, List.of(
-                new OrderLineItemsRequest(orderLineItem.getMenuId(), orderLineItem.getQuantity()),
-                new OrderLineItemsRequest(orderLineItem2.getMenuId(), orderLineItem2.getQuantity())
+                new OrderLineItemsDemand(orderLineItem.getMenuId(), orderLineItem.getQuantity()),
+                new OrderLineItemsDemand(orderLineItem2.getMenuId(), orderLineItem2.getQuantity())
         )))
                 .isInstanceOf(IllegalArgumentException.class);
     }
@@ -178,12 +178,12 @@ class OrderServiceTest {
         final MenuGroup savedMenuGroup = 메뉴그룹만들기(menuGroupService);
 
         // given : 메뉴
-        final MenuResponse savedMenu
+        final MenuRecord savedMenu
                 = menuService.create("메뉴!", new Price(new BigDecimal("4000")), savedMenuGroup.getId(),
-                List.of(new MenuProductRequest(savedProduct.getId(), 4L)));
-        final MenuResponse savedMenu2
+                List.of(new MenuProductDemand(savedProduct.getId(), 4L)));
+        final MenuRecord savedMenu2
                 = menuService.create("메뉴 2!", new Price(new BigDecimal("9000")), savedMenuGroup.getId(),
-                List.of(new MenuProductRequest(savedProduct.getId(), 4L)));
+                List.of(new MenuProductDemand(savedProduct.getId(), 4L)));
 
         // given : 주문 메뉴
         final OrderLineItem orderLineItem = 주문할메뉴만들기(savedMenu.getId(), 4);
@@ -193,11 +193,11 @@ class OrderServiceTest {
         final OrderTable savedOrderTable = 주문테이블만들기(tableService, false);
 
         // given : 주문
-        final OrderResponse savedOrder = orderService.create(
+        final OrderRecord savedOrder = orderService.create(
                 savedOrderTable.getId(),
                 List.of(
-                        new OrderLineItemsRequest(orderLineItem.getMenuId(), orderLineItem.getQuantity()),
-                        new OrderLineItemsRequest(orderLineItem2.getMenuId(), orderLineItem2.getQuantity())
+                        new OrderLineItemsDemand(orderLineItem.getMenuId(), orderLineItem.getQuantity()),
+                        new OrderLineItemsDemand(orderLineItem2.getMenuId(), orderLineItem2.getQuantity())
                 )
         );
 

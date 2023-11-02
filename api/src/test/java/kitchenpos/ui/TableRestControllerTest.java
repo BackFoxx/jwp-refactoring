@@ -9,7 +9,7 @@ import kitchenpos.api.ordertable.ui.TableRestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 import kitchenpos.core.ordertable.application.TableService;
-import kitchenpos.core.ordertable.application.dto.TableResponse;
+import kitchenpos.core.ordertable.application.dto.OrderTableRecord;
 import kitchenpos.core.ordertable.domain.NumberOfGuests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ class TableRestControllerTest {
     @DisplayName("POST /api/tables")
     void createProduct() throws Exception {
         when(tableService.create(new NumberOfGuests(5), false))
-                .thenReturn(new TableResponse(1L, null, new NumberOfGuests(5), false));
+                .thenReturn(new OrderTableRecord(1L, null, new NumberOfGuests(5), false));
 
         mockMvc.perform(post("/api/tables")
                         .contentType(MediaType.APPLICATION_JSON)

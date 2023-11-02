@@ -1,17 +1,13 @@
 package kitchenpos.core.order.application.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
-public class OrderLineItemsRequest {
-    @JsonProperty
+public class OrderLineItemsDemand {
+
     private final Long menuId;
-    @JsonProperty
     private final Long quantity;
 
-    @JsonCreator
-    public OrderLineItemsRequest(final Long menuId, final Long quantity) {
+    public OrderLineItemsDemand(final Long menuId, final Long quantity) {
         this.menuId = menuId;
         this.quantity = quantity;
     }
@@ -32,7 +28,7 @@ public class OrderLineItemsRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final OrderLineItemsRequest that = (OrderLineItemsRequest) o;
+        final OrderLineItemsDemand that = (OrderLineItemsDemand) o;
         return Objects.equals(menuId, that.menuId) && Objects.equals(quantity, that.quantity);
     }
 

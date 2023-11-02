@@ -8,8 +8,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.math.BigDecimal;
 import java.util.List;
-import kitchenpos.core.menu.application.dto.MenuProductRequest;
-import kitchenpos.core.menu.application.dto.MenuResponse;
+import kitchenpos.core.menu.application.dto.MenuProductDemand;
+import kitchenpos.core.menu.application.dto.MenuRecord;
 import kitchenpos.core.menu.application.MenuService;
 import kitchenpos.core.menu.domain.MenuProduct;
 import kitchenpos.core.product.application.ProductService;
@@ -46,12 +46,12 @@ class MenuServiceTest {
         final MenuProduct menuProduct = 메뉴상품만들기(savedProduct, 4L);
         final MenuProduct menuProduct2 = 메뉴상품만들기(savedProduct2, 1L);
 
-        final List<MenuProductRequest> menuProductRequests = List.of(
-                new MenuProductRequest(menuProduct.getProductId(), menuProduct.getQuantity()),
-                new MenuProductRequest(menuProduct2.getProductId(), menuProduct2.getQuantity())
+        final List<MenuProductDemand> menuProductRequests = List.of(
+                new MenuProductDemand(menuProduct.getProductId(), menuProduct.getQuantity()),
+                new MenuProductDemand(menuProduct2.getProductId(), menuProduct2.getQuantity())
         );
 
-        final MenuResponse savedMenu = menuService.create("메뉴!", new Price(new BigDecimal("4000")), menuGroupId, menuProductRequests);
+        final MenuRecord savedMenu = menuService.create("메뉴!", new Price(new BigDecimal("4000")), menuGroupId, menuProductRequests);
 
         assertThat(savedMenu).isNotNull();
     }
@@ -67,9 +67,9 @@ class MenuServiceTest {
         final MenuProduct menuProduct = 메뉴상품만들기(savedProduct, 4L);
         final MenuProduct menuProduct2 = 메뉴상품만들기(savedProduct2, 1L);
 
-        final List<MenuProductRequest> menuProductRequests = List.of(
-                new MenuProductRequest(menuProduct.getProductId(), menuProduct.getQuantity()),
-                new MenuProductRequest(menuProduct2.getProductId(), menuProduct2.getQuantity())
+        final List<MenuProductDemand> menuProductRequests = List.of(
+                new MenuProductDemand(menuProduct.getProductId(), menuProduct.getQuantity()),
+                new MenuProductDemand(menuProduct2.getProductId(), menuProduct2.getQuantity())
         );
 
         assertThatThrownBy(() -> menuService.create("메뉴!", new Price(new BigDecimal("4000")), 0L, menuProductRequests))
@@ -94,9 +94,9 @@ class MenuServiceTest {
         final MenuProduct menuProduct = 메뉴상품만들기(savedProduct, 4L);
         final MenuProduct menuProduct2 = 메뉴상품만들기(savedProduct2, 1L);
 
-        final List<MenuProductRequest> menuProductRequests = List.of(
-                new MenuProductRequest(menuProduct.getProductId(), menuProduct.getQuantity()),
-                new MenuProductRequest(menuProduct2.getProductId(), menuProduct2.getQuantity())
+        final List<MenuProductDemand> menuProductRequests = List.of(
+                new MenuProductDemand(menuProduct.getProductId(), menuProduct.getQuantity()),
+                new MenuProductDemand(menuProduct2.getProductId(), menuProduct2.getQuantity())
         );
 
         assertThatThrownBy(() -> menuService.create("메뉴!", new Price(new BigDecimal("20001")), menuGroupId, menuProductRequests))
@@ -121,12 +121,12 @@ class MenuServiceTest {
         final MenuProduct menuProduct = 메뉴상품만들기(savedProduct, 4L);
         final MenuProduct menuProduct2 = 메뉴상품만들기(savedProduct2, 1L);
 
-        final List<MenuProductRequest> menuProductRequests = List.of(
-                new MenuProductRequest(menuProduct.getProductId(), menuProduct.getQuantity()),
-                new MenuProductRequest(menuProduct2.getProductId(), menuProduct2.getQuantity())
+        final List<MenuProductDemand> menuProductRequests = List.of(
+                new MenuProductDemand(menuProduct.getProductId(), menuProduct.getQuantity()),
+                new MenuProductDemand(menuProduct2.getProductId(), menuProduct2.getQuantity())
         );
 
-        final MenuResponse savedManu = menuService.create("메뉴!", new Price(new BigDecimal("4000")), menuGroupId, menuProductRequests);
+        final MenuRecord savedManu = menuService.create("메뉴!", new Price(new BigDecimal("4000")), menuGroupId, menuProductRequests);
 
         assertThat(savedManu).extracting("menuProducts").asList()
                 .as("메뉴를 저장하면 메뉴 상품도 따라 저장된다.")
