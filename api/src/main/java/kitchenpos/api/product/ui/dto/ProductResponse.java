@@ -1,7 +1,7 @@
 package kitchenpos.api.product.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import java.math.BigDecimal;
 import java.util.List;
 import kitchenpos.core.product.application.dto.ProductRecord;
 import kitchenpos.core.product.domain.Name;
@@ -11,16 +11,14 @@ public class ProductResponse {
     @JsonProperty("id")
     private final Long id;
 
-    @JsonUnwrapped
-    private final Name name;
+    private final String name;
 
-    @JsonUnwrapped
-    private final Price price;
+    private final BigDecimal price;
 
     public ProductResponse(final Long id, final Name name, final Price price) {
         this.id = id;
-        this.name = name;
-        this.price = price;
+        this.name = name.getName();
+        this.price = price.getPrice();
     }
 
     public static ProductResponse from(final ProductRecord record) {
@@ -35,17 +33,5 @@ public class ProductResponse {
         return records
                 .stream().map(ProductResponse::from)
                 .toList();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Name getName() {
-        return name;
-    }
-
-    public Price getPrice() {
-        return price;
     }
 }

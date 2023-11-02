@@ -21,9 +21,6 @@ public class Menu {
     private Set<MenuProduct> menuProducts;
 
     @PersistenceCreator
-    public Menu() {
-    }
-
     public Menu(final Long id, final String name, final Price price, final Long menuGroupId,
                 final MenuProducts menuProducts) {
         this.id = id;

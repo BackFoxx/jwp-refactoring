@@ -1,19 +1,16 @@
 package kitchenpos.api.menugroup.ui.dto;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.util.List;
-import java.util.stream.Collectors;
 import kitchenpos.core.menugroup.application.dto.MenuGroupRecord;
 import kitchenpos.core.product.domain.Name;
 
 public class MenuGroupResponse {
     private Long id;
-    @JsonUnwrapped
-    private Name name;
+    private String name;
 
     public MenuGroupResponse(final Long id, final Name name) {
         this.id = id;
-        this.name = name;
+        this.name = name.getName();
     }
 
     public static MenuGroupResponse from(final MenuGroupRecord menuGroupRecord) {
@@ -33,7 +30,7 @@ public class MenuGroupResponse {
         return id;
     }
 
-    public Name getName() {
+    public String getName() {
         return name;
     }
 }

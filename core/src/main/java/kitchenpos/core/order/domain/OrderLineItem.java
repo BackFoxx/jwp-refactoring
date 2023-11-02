@@ -3,7 +3,6 @@ package kitchenpos.core.order.domain;
 import kitchenpos.core.menu.domain.Menu;
 import kitchenpos.core.product.domain.Price;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Embedded;
 
@@ -16,7 +15,6 @@ public class OrderLineItem {
     private String name;
     private long quantity;
 
-    @PersistenceCreator
     public OrderLineItem(final Long menuId, final Price price, final String name,
                          final long quantity) {
         this.menuId = AggregateReference.to(menuId);

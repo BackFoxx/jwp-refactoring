@@ -47,6 +47,10 @@ public class Price {
         return this.price.compareTo(price.price) > 0;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
