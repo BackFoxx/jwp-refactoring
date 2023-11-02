@@ -28,7 +28,7 @@ public class TableGroupService {
         final OrderTables orderTables = new OrderTables(orderTableDao.findAllByIdIn(orderTableIds));
         validateOrderTables(orderTableIds, orderTables);
 
-        final TableGroup tableGroup = new TableGroup(LocalDateTime.now(), new OrderTables(orderTables.getOrderTables()));
+        final TableGroup tableGroup = new TableGroup(LocalDateTime.now(), orderTables);
         return TableGroupRecord.from(tableGroupDao.save(tableGroup));
     }
 

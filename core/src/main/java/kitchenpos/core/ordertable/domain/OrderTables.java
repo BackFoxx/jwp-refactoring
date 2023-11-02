@@ -39,14 +39,10 @@ public class OrderTables implements Iterable<OrderTable> {
         }
     }
 
-    public List<OrderTable> getOrderTables() {
-        return orderTables;
-    }
-
     public List<Long> getOrderTableIds() {
         return orderTables.stream()
                 .map(OrderTable::getId)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
