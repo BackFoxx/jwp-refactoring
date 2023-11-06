@@ -1,17 +1,20 @@
 package kitchenpos.ui;
 
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import kitchenpos.api.menugroup.ui.MenuGroupRestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.math.BigDecimal;
 import java.util.Map;
-import kitchenpos.core.menugroup.application.MenuGroupService;
-import kitchenpos.core.menugroup.application.dto.MenuGroupRecord;
-import kitchenpos.core.menugroup.domain.MenuGroup;
+import kitchenpos.api.product.ui.ProductRestController;
+import kitchenpos.core.product.application.ProductService;
+import kitchenpos.core.product.application.dto.ProductRecord;
 import kitchenpos.core.product.domain.Name;
+import kitchenpos.core.product.domain.Price;
+import kitchenpos.core.product.domain.Product;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +23,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(MenuGroupRestController.class)
-class MenuGroupRestControllerTest {
+@WebMvcTest(ProductRestController.class)
+class ProductRestControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -30,15 +33,17 @@ class MenuGroupRestControllerTest {
     ObjectMapper objectMapper;
 
     @MockBean
-    MenuGroupService menuGroupService;
+    ProductService productService;
 
     @Test
-    @DisplayName("POST /api/menu-groups")
+    @DisplayName("POST /api/products")
     void createProduct() throws Exception {
-        when(menuGroupService.create(new Name("메뉴그룹"))).thenReturn(MenuGroupRecord.from(new MenuGroup(1L, new Name("메뉴그룹"))));
-        mockMvc.perform(post("/api/menu-groups")
+        final Product product = new Product(1L, new Name("프로덕트"), new Price(new BigDecimal(4000L)));
+
+        when(productService.create(any(Name.class), any(Price.class))).thenReturn(ProductRecord.from(product));
+        mockMvc.perform(post("/api/products")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(Map.of("name", "메뉴그룹"))))
+                        .content(objectMapper.writeValueAsString(Map.of("name", "강정치킨", "price", 17000))))
                 .andExpect(status().isCreated())
                 .andDo(print());
     }

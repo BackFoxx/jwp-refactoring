@@ -7,21 +7,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import kitchenpos.api.order.ui.OrderRestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import kitchenpos.api.order.ui.OrderRestController;
 import kitchenpos.core.order.application.OrderService;
+import kitchenpos.core.order.application.dto.OrderDemand;
 import kitchenpos.core.order.application.dto.OrderLineItemRecord;
+import kitchenpos.core.order.application.dto.OrderLineItemsDemand;
 import kitchenpos.core.order.application.dto.OrderRecord;
 import kitchenpos.core.order.domain.Order;
 import kitchenpos.core.order.domain.OrderLineItem;
 import kitchenpos.core.order.domain.OrderStatus;
-import kitchenpos.core.order.application.dto.OrderLineItemsDemand;
-import kitchenpos.core.order.application.dto.OrderDemand;
 import kitchenpos.core.product.domain.Price;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

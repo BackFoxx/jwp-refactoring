@@ -5,11 +5,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import kitchenpos.api.menu.ui.dto.MenuRequest;
-import kitchenpos.api.menu.ui.MenuRestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
+import kitchenpos.api.menu.ui.MenuRestController;
+import kitchenpos.api.menu.ui.dto.MenuRequest;
 import kitchenpos.core.menu.application.MenuService;
 import kitchenpos.core.menu.application.dto.MenuProductDemand;
 import kitchenpos.core.menu.application.dto.MenuProductRecord;

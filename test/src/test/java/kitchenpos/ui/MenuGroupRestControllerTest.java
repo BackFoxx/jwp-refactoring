@@ -5,12 +5,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import kitchenpos.api.ordertable.ui.TableRestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
-import kitchenpos.core.ordertable.application.TableService;
-import kitchenpos.core.ordertable.application.dto.OrderTableRecord;
-import kitchenpos.core.ordertable.domain.NumberOfGuests;
+import kitchenpos.api.menugroup.ui.MenuGroupRestController;
+import kitchenpos.core.menugroup.application.MenuGroupService;
+import kitchenpos.core.menugroup.application.dto.MenuGroupRecord;
+import kitchenpos.core.menugroup.domain.MenuGroup;
+import kitchenpos.core.product.domain.Name;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(TableRestController.class)
-class TableRestControllerTest {
+@WebMvcTest(MenuGroupRestController.class)
+class MenuGroupRestControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -29,17 +30,15 @@ class TableRestControllerTest {
     ObjectMapper objectMapper;
 
     @MockBean
-    TableService tableService;
+    MenuGroupService menuGroupService;
 
     @Test
-    @DisplayName("POST /api/tables")
+    @DisplayName("POST /api/menu-groups")
     void createProduct() throws Exception {
-        when(tableService.create(new NumberOfGuests(5), false))
-                .thenReturn(new OrderTableRecord(1L, null, new NumberOfGuests(5), false));
-
-        mockMvc.perform(post("/api/tables")
+        when(menuGroupService.create(new Name("메뉴그룹"))).thenReturn(MenuGroupRecord.from(new MenuGroup(1L, new Name("메뉴그룹"))));
+        mockMvc.perform(post("/api/menu-groups")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(Map.of("numberOfGuests", 5, "empty", false))))
+                        .content(objectMapper.writeValueAsString(Map.of("name", "메뉴그룹"))))
                 .andExpect(status().isCreated())
                 .andDo(print());
     }

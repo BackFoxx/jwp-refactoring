@@ -1,20 +1,16 @@
 package kitchenpos.ui;
 
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import kitchenpos.api.product.ui.ProductRestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.math.BigDecimal;
 import java.util.Map;
-import kitchenpos.core.product.application.ProductService;
-import kitchenpos.core.product.application.dto.ProductRecord;
-import kitchenpos.core.product.domain.Product;
-import kitchenpos.core.product.domain.Name;
-import kitchenpos.core.product.domain.Price;
+import kitchenpos.api.ordertable.ui.TableRestController;
+import kitchenpos.core.ordertable.application.TableService;
+import kitchenpos.core.ordertable.application.dto.OrderTableRecord;
+import kitchenpos.core.ordertable.domain.NumberOfGuests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +19,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(ProductRestController.class)
-class ProductRestControllerTest {
+@WebMvcTest(TableRestController.class)
+class TableRestControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -33,17 +29,17 @@ class ProductRestControllerTest {
     ObjectMapper objectMapper;
 
     @MockBean
-    ProductService productService;
+    TableService tableService;
 
     @Test
-    @DisplayName("POST /api/products")
+    @DisplayName("POST /api/tables")
     void createProduct() throws Exception {
-        final Product product = new Product(1L, new Name("프로덕트"), new Price(new BigDecimal(4000L)));
+        when(tableService.create(new NumberOfGuests(5), false))
+                .thenReturn(new OrderTableRecord(1L, null, new NumberOfGuests(5), false));
 
-        when(productService.create(any(Name.class), any(Price.class))).thenReturn(ProductRecord.from(product));
-        mockMvc.perform(post("/api/products")
+        mockMvc.perform(post("/api/tables")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(Map.of("name", "강정치킨", "price", 17000))))
+                        .content(objectMapper.writeValueAsString(Map.of("numberOfGuests", 5, "empty", false))))
                 .andExpect(status().isCreated())
                 .andDo(print());
     }
